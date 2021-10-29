@@ -22,7 +22,9 @@ class Logic {
         UI.draw(board);
 
         int player = 2;
-        while ( ! WinChecker.check(board) ) {
+        int playCnt = 0;
+        while ( ! WinChecker.check(board, playCnt) ) {
+        	playCnt++;
             player = nextPlayer(player);
 
             System.out.println("Input 1-9:");
@@ -66,7 +68,7 @@ class UI {
  * Should check whether any player has won by checking if there are three of the same boxes in the 2D array.
  */
 class WinChecker {
-    public static boolean check(int[][] board) {
+    public static boolean check(int[][] board, int playCnt) {
       // TODO
     	return false;
     }
