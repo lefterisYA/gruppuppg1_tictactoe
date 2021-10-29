@@ -41,8 +41,7 @@ class Logic {
 
     // Just return the opposite:
     private int nextPlayer(int player) {
-        //TODO
-    	return -1;
+		return player == 1 ? 2 : 1;
     }
 }
 
@@ -79,7 +78,7 @@ class WinChecker {
     }
 
     // Given a 1D-array, return whether all tiles are identical.
-    public static boolean chkLineWins(int[] line) {
+    private static boolean chkLineWins(int[] line) {
         //TODO
     	return false;
     }
