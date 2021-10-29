@@ -51,7 +51,15 @@ class Logic {
  */
 class UI {
     public static void draw(int[][]board) {
-      // TODO
+		System.out.println("-"+"--".repeat(board.length));
+		for ( int y = 0; y<board.length; y++ ) {
+			System.out.print("|");
+			for ( int x = 0; x<board.length; x++ ) {
+				String tile = board[y][x] == 1 ? "X" : board[y][x] == 2 ? "O" : " "; 
+				System.out.print(tile+"|");
+			}
+			System.out.println("\n-"+"--".repeat(board.length));
+		}
     }
 }
 
