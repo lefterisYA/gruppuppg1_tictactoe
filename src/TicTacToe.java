@@ -13,7 +13,7 @@ public class TicTacToe {
 class Logic {
 	// 0 betyder: ledig ruta
 	// 1 betyder: rutan till spelare 1
-	// 2 betyder: rutan till spelare 2
+	// 2 betyder: rutan till spelare  2
     int[][] board;
 
     public Logic(int gridSize) {
