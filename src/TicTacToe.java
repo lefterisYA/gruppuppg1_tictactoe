@@ -86,7 +86,7 @@ class UI {
  */
 class WinChecker {
 	/* Check takes a 2D-array and returns true if there exists a straight
-	 * line with all values equal and not zero. hej v.rld
+	 * line with all values equal and not zero. hej igen då!
 	 */
     public static boolean check(int[][] board, int currPlayer, int playCnt) {
       // TODO
