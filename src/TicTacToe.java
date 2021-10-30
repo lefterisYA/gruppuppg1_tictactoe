@@ -25,7 +25,9 @@ class Logic {
 
         int currPlayer = 2;
         int playCnt = 0;
-        while ( ! WinChecker.check(board, currPlayer, playCnt) ) {
+        int maxTurns = board.length * board.length;
+   
+        while ( ! WinChecker.check(board, currPlayer, playCnt) && playCnt < maxTurns ) {
         	playCnt++;
             currPlayer = nextPlayer(currPlayer);
 
@@ -88,11 +90,16 @@ class WinChecker {
 	 */
     public static boolean check(int[][] board, int currPlayer, int playCnt) {
       // TODO
+    	int[] horizLines = new int[board.length];
+    	int[] vertLines = rotateBoard(board);
     	return false;
     }
 
     /*
      * By transforming the board we get can easier iterate over the elements and so check the vertical lines too.
+     * 123          147
+     * 456          258
+     * 789          369
      */
     private static int[][] rotateBoard(int[][] boardIn) {
       // TODO
