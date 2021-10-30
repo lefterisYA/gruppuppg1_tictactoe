@@ -86,12 +86,12 @@ class UI {
  */
 class WinChecker {
 	/* Check takes a 2D-array and returns true if there exists a straight
-	 * line with all values equal and not zero.
+	 * line with all values equal and not zero. hej v.rld
 	 */
     public static boolean check(int[][] board, int currPlayer, int playCnt) {
       // TODO
     	int[] horizLines = new int[board.length];
-    	int[] vertLines = rotateBoard(board);
+    	//int[] vertLines = rotateBoard(board);
     	return false;
     }
 
