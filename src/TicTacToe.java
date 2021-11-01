@@ -23,16 +23,15 @@ class Logic {
     public void play(Scanner sc) {
         UI.draw(board);
 
-        int currPlayer = 2;
+        int currPlayer = 1;
         int playCnt = 0;
         int maxTurns = board.length * board.length;
    
-        while ( ! WinChecker.check(board, currPlayer, playCnt) && playCnt < maxTurns ) {
+        while ( ! WinChecker.check(board) && playCnt < maxTurns ) {
         	playCnt++;
-            currPlayer = nextPlayer(currPlayer);
 
-            System.out.println("Player " + 
-            		currPlayer + " it's your turn. Input 1-9:");
+            System.out.println( "Player " + currPlayer + 
+            		" it's your turn. Input 1-9:");
 
             int tile = sc.nextInt();
             int[] coord = sequentialToCoordinates(tile);
@@ -40,22 +39,34 @@ class Logic {
             board[coord[0]][coord[1]] = currPlayer;
 
             UI.draw(board);
+
+            currPlayer = nextPlayer(currPlayer);
         }
 
         System.out.println("Congratulations player " + currPlayer + "! You won!!");
     }
     
-    private int[] sequentialToCoordinates(int tile) {
+    // [0, 0] [0, 1] [0, 2]
+    // [1, 0] [1, 1] [1, 2]
+    // [2, 0] [2, 1] [2, 2]
+
+    // Byter från en int 1-9, som användaren matar in, till y och x, 
+    // alltså ex: [0,0], [1,0]
+    private int[] sequentialToCoordinates(int box) {
     	int[] ret = new int[2];
-    	ret[0] = (tile-1) / 3;
-    	ret[1] = (tile-1) % 3;
+    	ret[0] = (box-1) / 3; // y
+    	ret[1] = (box-1) % 3; // x
     	
     	return ret;
     }
 
     // Just return the opposite:
     private int nextPlayer(int player) {
-		return player == 1 ? 2 : 1;
+    	if ( player == 1 )
+    		return 2;
+    	else
+    		return 1;
+//		return player == 1 ? 2 : 1;
     }
 }
 
@@ -65,14 +76,21 @@ class Logic {
 class UI {
 	public static void draw(int[][] board) {
 		drawUi(board);
-		drawDebug(board);
+		drawDebug(board, "Board[][]:");
 	}
 	
-    public static void drawDebug(int[][] board) {
+    public static void drawDebug(int[][] board, String title) {
+    	System.out.println(title);
+//    	System.out.println("int[][] board;");
 		for ( int y = 0; y<board.length; y++ ) {
-			for ( int x = 0; x<board.length; x++ ) {
+//			System.out.print("int["+y+"]: int[]:");
+			for ( int x = 0; x<board[y].length; x++ ) {
 				System.out.print(board[y][x]);
 			}
+//			System.out.print("  ");
+//			for ( int x = 0; x<board.length; x++ ) {
+//				System.out.print(y+":"+board[y][x]+" ");
+//			}
 			System.out.println("");
 		}
     }
@@ -88,10 +106,40 @@ class WinChecker {
 	/* Check takes a 2D-array and returns true if there exists a straight
 	 * line with all values equal and not zero. hej igen då!
 	 */
-    public static boolean check(int[][] board, int currPlayer, int playCnt) {
-      // TODO
-    	int[] horizLines = new int[board.length];
-    	//int[] vertLines = rotateBoard(board);
+    public static boolean check(int[][] board) {
+    	int[][] horizoLines = new int[board.length][board.length];
+    	int[][] verticLines = new int[board.length][board.length];
+    	int[][] diagonLines = new int[2][board.length];
+
+    	for ( int i=0; i<board.length; i++) {
+    		horizoLines[i] = board[i];
+    	}
+
+    	if ( checkListOfLines(horizoLines) )
+    		return true;
+
+    	verticLines = swapCoordinates(board);
+
+    	if ( checkListOfLines(verticLines) )
+    		return true;
+
+    	diagonLines = genDiaLines(board);
+
+    	UI.drawDebug(horizoLines, "HorizLines");
+    	UI.drawDebug(verticLines, "VertiLines:");
+    	UI.drawDebug(diagonLines, "DiagoLines:");
+    	
+    	if ( checkListOfLines(diagonLines) )
+    		return true;
+
+    	return false;
+    }
+    
+    private static boolean checkListOfLines(int[][] lines) {
+    	for ( int i=0; i<lines.length; i++) {
+    		if ( chkLineWins(lines[i]) )
+    			return true;
+    	}
     	return false;
     }
 
@@ -101,19 +149,36 @@ class WinChecker {
      * 456          258
      * 789          369
      */
-    private static int[][] rotateBoard(int[][] boardIn) {
-      // TODO
-    	return null;
+    private static int[][] swapCoordinates(int[][] boardIn) {
+    	int[][] ret = new int[boardIn.length][boardIn.length];
+    	for ( int i=0; i<boardIn.length; i++) {
+    		for ( int u=0; u<boardIn.length; u++) {
+    			ret[i][u] = boardIn[u][i];
+    		}
+    	}
+    	return ret;
     }
 
-    // Given a 1D-array, return whether all tiles are identical.
+    // Given a 1D-array, return whether all elements are identical and not zero
     private static boolean chkLineWins(int[] line) {
-        //TODO
-    	return false;
+    	int frsNum = line[0];
+
+    	for ( int i=1; i<line.length; i++) {
+    		int currElem = line[i];
+
+    		if ( currElem != frsNum || currElem == 0 )
+    			return false;
+    	}
+        
+    	return true;
     }
     
 	private static int[][] genDiaLines(int[][] boardIn){
-
-		return null;
+    	int[][] ret = new int[2][boardIn.length];
+    	for ( int i=0; i<boardIn.length; i++) {
+    		boardIn[0][i] = boardIn[i][i];
+    		boardIn[1][i] = boardIn[i][boardIn.length-i-1];
+    	}
+		return ret;
 	}
 }
