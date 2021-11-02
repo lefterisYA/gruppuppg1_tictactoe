@@ -34,24 +34,29 @@ class Logic {
         int playCnt = 0;
         int maxTurns = board.length * board.length;
    
-        while ( ! WinChecker.check(board) && playCnt < maxTurns ) {
+        while (true) {
         	playCnt++;
 
-
             int tile = playerChoose(sc, Integer.toString(currPlayer));
-//            int tile = sc.nextInt();
             int[] coord = sequentialToCoordinates(tile);
-//            System.out.println(Arrays.toString(coord));
 
             board[coord[0]][coord[1]] = currPlayer;
 
             UI.draw(board);
 
-            currPlayer = nextPlayer(currPlayer);
-         
+            if ( ! WinChecker.check(board) && playCnt < maxTurns ) {
+            	currPlayer = nextPlayer(currPlayer);
+            } else if (playCnt >= maxTurns) {
+            	currPlayer = 0;
+            	break;
+            }
         }
 
-        System.out.println("Congratulations player " + currPlayer + "! You won!!");
+        if ( currPlayer == 0 ) {
+        	System.out.println("Ah, game ended in draw!");
+        } else {
+        	System.out.println("Congratulations player " + currPlayer + "! You won!!");
+        }
     }
     
     // Byter från en int 1-9, som användaren matar in, till y och x, alltså ex: [0,0], [1,0]
@@ -91,18 +96,20 @@ class Logic {
 					throw new Exception();
 
 				playersChoices.add(choice);
-				//				playerList(choice);	 
+					 
 				noOfChoices++;
 				flag = true;
 
 			} catch (Exception e) {
-				printBoxTakenError(input);
+				printBoxTakenError();
 			}
 		} while (!flag);
 		return choice ;
 	}
 	
-	void printBoxTakenError(Scanner input) {
+	void printBoxTakenError() {
+		System.out.println();
+		System.out.println();
 		System.out.println("Your choice out of limit!\n");
 		System.out.println(getValidChoices());
 	}
