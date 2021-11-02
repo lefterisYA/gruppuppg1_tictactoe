@@ -4,8 +4,8 @@ public class TicTacToe {
     public static void main(String[] args) {
 //    	AnasTic anasTic = new AnasTic();
 //    	AnasTic.anasRun(null);
-    	TEST.main(null);
-    	System.exit(0);
+    	//TEST.main(null);
+    	//System.exit(0);
     	
         Scanner sc = new Scanner(System.in);
 
@@ -79,9 +79,31 @@ class Logic {
  * Should draw the board given a 2D array.
  */
 class UI {
+	public static void drawBoard(int[][] ticTac) {
+		System.out.println();
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 2; j++) {
+				System.out.print(ticTac[i][j] + " | ");
+			}
+
+			System.out.print(ticTac[i][2]);
+			System.out.println();
+			System.out.println("--+---+--");
+
+		}
+		for (int j = 0; j < 2; j++) {
+			System.out.print(ticTac[2][j] + " | ");
+		}
+		System.out.print(ticTac[2][2]);
+		System.out.println();
+		System.out.println();
+		System.out.println();
+	}
+	
 	public static void draw(int[][] board) {
-		drawUi(board);
-		drawDebug(board, "Board[][]:");
+		drawBoard(board);
+		//drawUi(board);
+		//drawDebug(board, "Board[][]:");
 	}
 	
     public static void drawDebug(int[][] board, String title) {
@@ -130,9 +152,9 @@ class WinChecker {
 
     	diagonLines = genDiaLines(board);
 
-    	UI.drawDebug(horizoLines, "HorizLines");
-    	UI.drawDebug(verticLines, "VertiLines:");
-    	UI.drawDebug(diagonLines, "DiagoLines:");
+    	//UI.drawDebug(horizoLines, "HorizLines");
+    	//UI.drawDebug(verticLines, "VertiLines:");
+    	//UI.drawDebug(diagonLines, "DiagoLines:");
     	
     	if ( checkListOfLines(diagonLines) )
     		return true;
