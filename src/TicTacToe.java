@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -38,7 +40,7 @@ class Logic {
             System.out.println( "Player " + currPlayer + 
             		" it's your turn. Input 1-9:");
 
-            int tile = sc.nextInt();
+            int tile = playerChoose(sc, Integer.toString(currPlayer));
             int[] coord = sequentialToCoordinates(tile);
 
             board[coord[0]][coord[1]] = currPlayer;
@@ -46,6 +48,7 @@ class Logic {
             UI.draw(board);
 
             currPlayer = nextPlayer(currPlayer);
+         
         }
 
         System.out.println("Congratulations player " + currPlayer + "! You won!!");
@@ -73,6 +76,45 @@ class Logic {
     		return 1;
 //		return player == 1 ? 2 : 1;
     }
+    ArrayList<Integer> Choices = new ArrayList(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+    static ArrayList<Integer> playersChoices = new ArrayList<>();
+    static int noOfChoices = 0;
+    //String name ;
+    
+	public int playerChoose( Scanner input, String name){	
+
+		boolean flag = false;
+		int choice=0;
+
+		do {
+			try {
+				System.out.println(name +" choose your position: ");
+
+				choice = input.nextInt();
+				if ((choice < 1 || choice > 9) || (playersChoices.contains(choice))) 
+					throw new Exception();
+
+				playersChoices.add(choice);
+				//				playerList(choice);	 
+				noOfChoices++;
+				flag = true;
+
+			} catch (Exception e) {
+				printTakenBox(input);
+			}
+		} while (!flag);
+		return choice ;
+	}
+	
+	void printTakenBox(Scanner input) {
+		input.nextLine();             // without this code here will be infinite loop
+		System.out.println();
+		System.out.println("your choice out of limit, choose again from this list:");
+		Choices.removeAll(playersChoices);
+		System.out.print(Choices);
+		System.out.println();
+		System.out.println();
+	}
 }
 
 /*
@@ -134,10 +176,24 @@ class WinChecker {
 	 * line with all values equal and not zero. hej igen då!
 	 */
     public static boolean check(int[][] board) {
+    	/*
+    	ArrayList <Integer>topRaw =      new ArrayList<>(Arrays.asList(1,2,3));
+		ArrayList <Integer>midRaw =      new ArrayList<>(Arrays.asList(4,5,6));
+		ArrayList <Integer>botRaw =      new ArrayList<>(Arrays.asList(7,8,9));
+		ArrayList <Integer>leftColomn =  new ArrayList<>(Arrays.asList(1,4,7));
+		ArrayList <Integer>midColomn =   new ArrayList<>(Arrays.asList(2,5,8));
+		ArrayList <Integer>rightColomn = new ArrayList<>(Arrays.asList(3,6,9));
+		ArrayList <Integer>cross1 =      new ArrayList<>(Arrays.asList(1,5,9));
+		ArrayList <Integer>cross2 =      new ArrayList<>(Arrays.asList(3,5,7));
+		
+		horizoLines[0] == topRow
+		
+		
+    	 */
     	int[][] horizoLines = new int[board.length][board.length];
     	int[][] verticLines = new int[board.length][board.length];
-    	int[][] diagonLines = new int[2][board.length];
-
+    	int[][] diagonLines = new int[2][board.length]; 
+    	
     	for ( int i=0; i<board.length; i++) {
     		horizoLines[i] = board[i];
     	}
