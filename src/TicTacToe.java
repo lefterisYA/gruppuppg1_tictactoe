@@ -4,11 +4,6 @@ import java.util.Scanner;
 
 public class TicTacToe {
     public static void main(String[] args) {
-//    	AnasTic anasTic = new AnasTic();
-//    	AnasTic.anasRun(null);
-    	//TEST.main(null);
-    	//System.exit(0);
-    	
         Scanner sc = new Scanner(System.in);
 
         Logic logic = new Logic(3);
@@ -22,6 +17,7 @@ class Logic {
 	// 1 betyder: rutan till spelare  1
 	// 2 betyder: rutan till spelare  2
     int[][] board;
+    boolean[] occupiedTiles = new boolean[9];
 
     public Logic(int gridSize) {
         board=new int[gridSize][gridSize];
@@ -38,18 +34,21 @@ class Logic {
         	playCnt++;
 
             int tile = playerChoose(sc, Integer.toString(currPlayer));
+            occupiedTiles[tile-1] = true;
             int[] coord = sequentialToCoordinates(tile);
 
             board[coord[0]][coord[1]] = currPlayer;
 
             UI.draw(board);
 
-            if ( ! WinChecker.check(board) && playCnt < maxTurns ) {
-            	currPlayer = nextPlayer(currPlayer);
-            } else if (playCnt >= maxTurns) {
+            if ( WinCheckerSimple.check(board) ) {
+            	break;
+            } else if ( playCnt >= maxTurns ) {
             	currPlayer = 0;
             	break;
             }
+
+            currPlayer = nextPlayer(currPlayer);
         }
 
         if ( currPlayer == 0 ) {
@@ -214,17 +213,17 @@ class WinChecker {
 
     	return false;
     }
-    
+ 
     private static boolean checkListOfLines(int[][] lines) {
     	for ( int i=0; i<lines.length; i++) {
-    		if ( chkLineWins(lines[i]) )
+    		if ( allElemsAreEqualAndNotZero(lines[i]) )
     			return true;
     	}
     	return false;
     }
 
     // Given a 1D-array, return whether all elements are identical and not zero
-    private static boolean chkLineWins(int[] line) {
+    private static boolean allElemsAreEqualAndNotZero(int[] line) {
     	int frsNum = line[0];
 
     	for ( int i=1; i<line.length; i++) {
@@ -241,7 +240,7 @@ class WinChecker {
 
 class LineGenerator {
 	public static int[][] genHorizonLines(int[][] boardIn){
-		return boardIn.clone();
+		return boardIn;
 	}
 
 	public static int[][] genDiagonLines(int[][] boardIn){
@@ -267,5 +266,37 @@ class LineGenerator {
     		}
     	}
     	return ret;
+    }
+}
+
+class WinCheckerSimple {
+    public static boolean check(int[][] board) {
+		int[][] allPossibleLines = { 
+				{1,2,3}, {4,5,6}, {7,8,9}, {1,4,7}, {2,5,8}, {3,6,9}, {1,5,9}, {3,5,7},
+		};
+		if ( checkIfTilesAreFree(allPossibleLines, board) ) {
+			return true;
+		}
+		return false;
+    }
+
+    private static boolean checkIfTilesAreFree(int[][] allLines, int[][] boardIn) {
+    	for ( int[] line : allLines ) {
+    		if ( isWinningLine(line, boardIn) ) {
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    private static boolean isWinningLine(int[] line, int[][] boardIn) {
+    	for ( int elem : line ) {
+    		int x = (elem-1) % boardIn.length;
+    		int y = (elem-1) / boardIn.length;
+    		if ( boardIn[y][x] == 0 )
+    			return false;
+    	}
+    	return true;
     }
 }

@@ -12,24 +12,24 @@ public class TEST {
 	ArrayList<Integer> playerList = new ArrayList<>();
 	ArrayList<Integer> Choices = new ArrayList(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
 
-
-
-
-
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
+		TEST t1 = new TEST("player1", 'X');
+		TEST t2 = new TEST("player2", '0');
 		do {
 			drawBoard();
-			TEST t1 = new TEST("player1", 'X');
 			t1.playerPosition(t1.playerChoose( input));
 
-
+			if (t1.checkToWin())
+				break;
 
 			if(noOfChoices == 9)
 				break;
 
-			TEST t2 = new TEST("player2", '0');
 			t2.playerPosition(t2.playerChoose( input));
+			if (t1.checkToWin())
+				break;
+
 		}while (noOfChoices <= 9);
 
 
@@ -87,7 +87,7 @@ public class TEST {
 					throw new Exception();
 
 				playersChoices.add(choice);
-				//				playerList(choice);	 
+				playerList.add(choice);
 				noOfChoices++;
 				flag = true;
 
@@ -173,7 +173,7 @@ public class TEST {
 		System.out.println();
 	}
 
-	public static boolean checkToWin(ArrayList<Integer> playerList ) {
+	private boolean checkToWin() {
 
 		ArrayList <Integer>topRaw =      new ArrayList<>(Arrays.asList(1,2,3));
 		ArrayList <Integer>midRaw =      new ArrayList<>(Arrays.asList(4,5,6));
