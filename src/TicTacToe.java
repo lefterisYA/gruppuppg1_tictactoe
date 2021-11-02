@@ -37,13 +37,11 @@ class Logic {
         while ( ! WinChecker.check(board) && playCnt < maxTurns ) {
         	playCnt++;
 
-            System.out.println( "Player " + currPlayer + 
-            		" it's your turn. Input 1-9:");
 
-//            int tile = playerChoose(sc, Integer.toString(currPlayer));
-            int tile = sc.nextInt();
+            int tile = playerChoose(sc, Integer.toString(currPlayer));
+//            int tile = sc.nextInt();
             int[] coord = sequentialToCoordinates(tile);
-            System.out.println(Arrays.toString(coord));
+//            System.out.println(Arrays.toString(coord));
 
             board[coord[0]][coord[1]] = currPlayer;
 
@@ -74,10 +72,9 @@ class Logic {
 //		return player == 1 ? 2 : 1;
     }
 
-    ArrayList<Integer> Choices = new ArrayList(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+    ArrayList<Integer> Choices = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     static ArrayList<Integer> playersChoices = new ArrayList<>();
     static int noOfChoices = 0;
-    //String name ;
     
 	public int playerChoose( Scanner input, String name){	
 
@@ -86,7 +83,8 @@ class Logic {
 
 		do {
 			try {
-				System.out.println(name +" choose your position: ");
+				System.out.println( "Player " + name + 
+						" it's your turn. Input on of " + getValidChoices() + ":");
 
 				choice = input.nextInt();
 				if ((choice < 1 || choice > 9) || (playersChoices.contains(choice))) 
@@ -98,20 +96,20 @@ class Logic {
 				flag = true;
 
 			} catch (Exception e) {
-				printTakenBox(input);
+				printBoxTakenError(input);
 			}
 		} while (!flag);
 		return choice ;
 	}
 	
-	void printTakenBox(Scanner input) {
-		input.nextLine();             // without this code here will be infinite loop
-		System.out.println();
-		System.out.println("your choice out of limit, choose again from this list:");
+	void printBoxTakenError(Scanner input) {
+		System.out.println("Your choice out of limit!\n");
+		System.out.println(getValidChoices());
+	}
+	
+	ArrayList<Integer> getValidChoices() {
 		Choices.removeAll(playersChoices);
-		System.out.print(Choices);
-		System.out.println();
-		System.out.println();
+		return Choices;
 	}
 }
 
@@ -141,7 +139,7 @@ class UI {
 	}
 	
 	public static void draw(int[][] board) {
-		drawDebug(board, "Board[][]:");
+//		drawDebug(board, "Board[][]:");
 		drawBoard(board);
 		//drawUi(board);
 	}
@@ -217,7 +215,6 @@ class WinChecker {
     	}
     	return false;
     }
-
 
     // Given a 1D-array, return whether all elements are identical and not zero
     private static boolean chkLineWins(int[] line) {
