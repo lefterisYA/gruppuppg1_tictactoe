@@ -19,6 +19,7 @@ public class TEST {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		do {
+			drawBoard();
 			TEST t1 = new TEST("player1", 'X');
 			t1.playerPosition(t1.playerChoose( input));
 
@@ -79,7 +80,7 @@ public class TEST {
 
 		do {
 			try {
-				System.out.print(this.name +" choose your position: ");
+				System.out.println(this.name +" choose your position: ");
 
 				choice = input.nextInt();
 				if ((choice < 1 || choice > 9) || (playersChoices.contains(choice))) 
@@ -91,18 +92,21 @@ public class TEST {
 				flag = true;
 
 			} catch (Exception e) {
-
-				input.nextLine();             // without this code here will be infinite loop
-				System.out.println();
-				System.out.println("your choice out of limit, choose again from this list:");
-				Choices.removeAll(playersChoices);
-				System.out.print(Choices);
-				System.out.println();
-				System.out.println();
+				printTakenBox(input);
 			}
 		} while (!flag);
 		return choice ;
 
+	}
+	
+	void printTakenBox(Scanner input) {
+		input.nextLine();             // without this code here will be infinite loop
+		System.out.println();
+		System.out.println("your choice out of limit, choose again from this list:");
+		Choices.removeAll(playersChoices);
+		System.out.print(Choices);
+		System.out.println();
+		System.out.println();
 	}
 
 	//		public ArrayList<Integer> playerNumbers(int choice){
@@ -142,6 +146,13 @@ public class TEST {
 			break;
 
 		}
+		drawBoard();
+
+		return ticTac;
+
+	}
+	
+	public static void drawBoard() {
 		System.out.println();
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
@@ -160,9 +171,6 @@ public class TEST {
 		System.out.println();
 		System.out.println();
 		System.out.println();
-
-		return ticTac;
-
 	}
 
 	public static boolean checkToWin(ArrayList<Integer> playerList ) {
