@@ -174,24 +174,11 @@ class UI {
  * Should check whether any player has won by checking if there are three of the same boxes in the 2D array.
  */
 class WinChecker {
-	/* Check takes a 2D-array and returns true if there exists a straight
-	 * line with all values equal and not zero. hej igen då!
+	/* 
+	 * Takes a 2D-array and returns true if there exists a straight
+	 * line with all values equal and not zero.
 	 */
     public static boolean check(int[][] board) {
-    	/*
-    	ArrayList <Integer>topRaw =      new ArrayList<>(Arrays.asList(1,2,3));
-		ArrayList <Integer>midRaw =      new ArrayList<>(Arrays.asList(4,5,6));
-		ArrayList <Integer>botRaw =      new ArrayList<>(Arrays.asList(7,8,9));
-		ArrayList <Integer>leftColomn =  new ArrayList<>(Arrays.asList(1,4,7));
-		ArrayList <Integer>midColomn =   new ArrayList<>(Arrays.asList(2,5,8));
-		ArrayList <Integer>rightColomn = new ArrayList<>(Arrays.asList(3,6,9));
-		ArrayList <Integer>cross1 =      new ArrayList<>(Arrays.asList(1,5,9));
-		ArrayList <Integer>cross2 =      new ArrayList<>(Arrays.asList(3,5,7));
-		
-		horizoLines[0] == topRow
-		
-		
-    	 */
     	int[][] horizoLines = new int[board.length][board.length];
     	int[][] verticLines = new int[board.length][board.length];
     	int[][] diagonLines = new int[2][board.length]; 
@@ -266,37 +253,5 @@ class LineGenerator {
     		}
     	}
     	return ret;
-    }
-}
-
-class WinCheckerSimple {
-    public static boolean check(int[][] board) {
-		int[][] allPossibleLines = { 
-				{1,2,3}, {4,5,6}, {7,8,9}, {1,4,7}, {2,5,8}, {3,6,9}, {1,5,9}, {3,5,7},
-		};
-		if ( checkIfTilesAreFree(allPossibleLines, board) ) {
-			return true;
-		}
-		return false;
-    }
-
-    private static boolean checkIfTilesAreFree(int[][] allLines, int[][] boardIn) {
-    	for ( int[] line : allLines ) {
-    		if ( isWinningLine(line, boardIn) ) {
-    			return true;
-    		}
-    	}
-    	
-    	return false;
-    }
-    
-    private static boolean isWinningLine(int[] line, int[][] boardIn) {
-    	for ( int elem : line ) {
-    		int x = (elem-1) % boardIn.length;
-    		int y = (elem-1) / boardIn.length;
-    		if ( boardIn[y][x] == 0 )
-    			return false;
-    	}
-    	return true;
     }
 }
