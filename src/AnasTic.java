@@ -14,7 +14,7 @@ public class AnasTic {
 	static char[][] ticTac = new char[3][3];
 	static Scanner input = new Scanner(System.in);
 
-	public static void main(String[] args) {
+	public static void anasRun(String[] args) {
 		
 		
 		drawArray();

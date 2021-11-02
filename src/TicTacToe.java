@@ -2,6 +2,11 @@ import java.util.Scanner;
 
 public class TicTacToe {
     public static void main(String[] args) {
+//    	AnasTic anasTic = new AnasTic();
+//    	AnasTic.anasRun(null);
+    	TEST.main(null);
+    	System.exit(0);
+    	
         Scanner sc = new Scanner(System.in);
 
         Logic logic = new Logic(3);
