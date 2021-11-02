@@ -40,8 +40,10 @@ class Logic {
             System.out.println( "Player " + currPlayer + 
             		" it's your turn. Input 1-9:");
 
-            int tile = playerChoose(sc, Integer.toString(currPlayer));
+//            int tile = playerChoose(sc, Integer.toString(currPlayer));
+            int tile = sc.nextInt();
             int[] coord = sequentialToCoordinates(tile);
+            System.out.println(Arrays.toString(coord));
 
             board[coord[0]][coord[1]] = currPlayer;
 
@@ -54,12 +56,7 @@ class Logic {
         System.out.println("Congratulations player " + currPlayer + "! You won!!");
     }
     
-    // [0, 0] [0, 1] [0, 2]
-    // [1, 0] [1, 1] [1, 2]
-    // [2, 0] [2, 1] [2, 2]
-
-    // Byter från en int 1-9, som användaren matar in, till y och x, 
-    // alltså ex: [0,0], [1,0]
+    // Byter från en int 1-9, som användaren matar in, till y och x, alltså ex: [0,0], [1,0]
     private int[] sequentialToCoordinates(int box) {
     	int[] ret = new int[2];
     	ret[0] = (box-1) / 3; // y
@@ -76,6 +73,7 @@ class Logic {
     		return 1;
 //		return player == 1 ? 2 : 1;
     }
+
     ArrayList<Integer> Choices = new ArrayList(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     static ArrayList<Integer> playersChoices = new ArrayList<>();
     static int noOfChoices = 0;
@@ -143,9 +141,9 @@ class UI {
 	}
 	
 	public static void draw(int[][] board) {
+		drawDebug(board, "Board[][]:");
 		drawBoard(board);
 		//drawUi(board);
-		//drawDebug(board, "Board[][]:");
 	}
 	
     public static void drawDebug(int[][] board, String title) {
@@ -194,24 +192,18 @@ class WinChecker {
     	int[][] verticLines = new int[board.length][board.length];
     	int[][] diagonLines = new int[2][board.length]; 
     	
-    	for ( int i=0; i<board.length; i++) {
-    		horizoLines[i] = board[i];
-    	}
+    	horizoLines = LineGenerator.genHorizonLines(board);
 
     	if ( checkListOfLines(horizoLines) )
     		return true;
 
-    	verticLines = swapCoordinates(board);
+    	verticLines = LineGenerator.genVerticLines(board);
 
     	if ( checkListOfLines(verticLines) )
     		return true;
 
-    	diagonLines = genDiaLines(board);
+    	diagonLines = LineGenerator.genDiagonLines(board);
 
-    	//UI.drawDebug(horizoLines, "HorizLines");
-    	//UI.drawDebug(verticLines, "VertiLines:");
-    	//UI.drawDebug(diagonLines, "DiagoLines:");
-    	
     	if ( checkListOfLines(diagonLines) )
     		return true;
 
@@ -226,21 +218,6 @@ class WinChecker {
     	return false;
     }
 
-    /*
-     * By transforming the board we get can easier iterate over the elements and so check the vertical lines too.
-     * 123          147
-     * 456          258
-     * 789          369
-     */
-    private static int[][] swapCoordinates(int[][] boardIn) {
-    	int[][] ret = new int[boardIn.length][boardIn.length];
-    	for ( int i=0; i<boardIn.length; i++) {
-    		for ( int u=0; u<boardIn.length; u++) {
-    			ret[i][u] = boardIn[u][i];
-    		}
-    	}
-    	return ret;
-    }
 
     // Given a 1D-array, return whether all elements are identical and not zero
     private static boolean chkLineWins(int[] line) {
@@ -256,12 +233,35 @@ class WinChecker {
     	return true;
     }
     
-	private static int[][] genDiaLines(int[][] boardIn){
+}
+
+class LineGenerator {
+	public static int[][] genHorizonLines(int[][] boardIn){
+		return boardIn.clone();
+	}
+
+	public static int[][] genDiagonLines(int[][] boardIn){
     	int[][] ret = new int[2][boardIn.length];
     	for ( int i=0; i<boardIn.length; i++) {
-    		boardIn[0][i] = boardIn[i][i];
-    		boardIn[1][i] = boardIn[i][boardIn.length-i-1];
+    		ret[0][i] = boardIn[i][i];
+    		ret[1][i] = boardIn[i][boardIn.length-i-1];
     	}
 		return ret;
 	}
+
+    public static int[][] genVerticLines(int[][] boardIn) {
+    	int[][] ret = new int[boardIn.length][boardIn.length];
+    	/*
+    	 * By swapping x & y in the board we get a list of vertical lines:
+    	 * 123          147   [0,0] -> [0,0] | [0,1] -> [1,0] | [0,2] -> [2,0]
+    	 * 456          258   [1,0] -> [0,1] | [1,1] -> [1,1] | [1,2] -> [2,1]
+    	 * 789          369   [2,0] -> [0,2] | [2,1] -> [2,1] | [2,2] -> [2,2]
+    	 */
+    	for ( int i=0; i<boardIn.length; i++) {
+    		for ( int u=0; u<boardIn.length; u++) {
+    			ret[i][u] = boardIn[u][i];
+    		}
+    	}
+    	return ret;
+    }
 }
