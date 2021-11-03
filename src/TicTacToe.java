@@ -17,7 +17,7 @@ class Logic {
 	// 1 betyder: rutan till spelare  1
 	// 2 betyder: rutan till spelare  2
     int[][] board;
-    boolean[] occupiedTiles = new boolean[9];
+//    boolean[] occupiedTiles = new boolean[9];
 
     public Logic(int gridSize) {
         board=new int[gridSize][gridSize];
@@ -33,11 +33,13 @@ class Logic {
         while (true) {
         	playCnt++;
 
-            int tile = playerChoose(sc, Integer.toString(currPlayer));
-            occupiedTiles[tile-1] = true;
-            int[] coord = sequentialToCoordinates(tile);
+            int userChoice = playerChoose(sc, Integer.toString(currPlayer));
+//            occupiedTiles[userChoice-1] = true;
+            int[] coord = sequentialToXY(userChoice);
+            int y=coord[0];
+            int x=coord[1];
 
-            board[coord[0]][coord[1]] = currPlayer;
+            board[y][x] = currPlayer;
 
             UI.draw(board);
 
@@ -59,12 +61,33 @@ class Logic {
     }
     
     // Byter från en int 1-9, som användaren matar in, till y och x, alltså ex: [0,0], [1,0]
-    private int[] sequentialToCoordinates(int box) {
-    	int[] ret = new int[2];
-    	ret[0] = (box-1) / 3; // y
-    	ret[1] = (box-1) % 3; // x
+    private int[] sequentialToXY(int userChoice) {
+		switch (userChoice) {
+		case 1:
+			return new int[] {0,0};
+		case 2:
+			return new int[] {0,1};
+		case 3:
+			return new int[] {0,2};
+		case 4:
+			return new int[] {1,0};
+		case 5:
+			return new int[] {1,1};
+		case 6:
+			return new int[] {1,2};
+		case 7:
+			return new int[] {2,0};
+		case 8:
+			return new int[] {2,1};
+		case 9:
+			return new int[] {2,2};
+		}
+		return new int[] {0,0};
+//    	int[] ret = new int[2];
+//    	ret[0] = (box-1) / 3; // y
+//    	ret[1] = (box-1) % 3; // x
     	
-    	return ret;
+//    	return ret;
     }
 
     // Just return the opposite:
@@ -76,9 +99,8 @@ class Logic {
 //		return player == 1 ? 2 : 1;
     }
 
-    ArrayList<Integer> Choices = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+    static ArrayList<Integer> Choices = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     static ArrayList<Integer> playersChoices = new ArrayList<>();
-    static int noOfChoices = 0;
     
 	public int playerChoose( Scanner input, String name){	
 
@@ -96,7 +118,6 @@ class Logic {
 
 				playersChoices.add(choice);
 					 
-				noOfChoices++;
 				flag = true;
 
 			} catch (Exception e) {
