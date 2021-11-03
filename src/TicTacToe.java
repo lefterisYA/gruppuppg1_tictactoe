@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -14,10 +13,10 @@ public class TicTacToe {
 }
 
 class Logic {
-	// 0 betyder: ledig ruta
-	// 1 betyder: rutan till spelare  1
-	// 2 betyder: rutan till spelare  2
-    int[][] board;
+    int[][] board; // Betydelser: 0:ledig, 1:Spelare ETT, 2: Spelare TVÅ
+
+    // Skapa en lista av två winchecker, en för varje spelare.
+    CheckToWin[] winCheckers = { new CheckToWin(), new CheckToWin() };
 
     public Logic(int gridSize) {
         board=new int[gridSize][gridSize];
@@ -29,23 +28,20 @@ class Logic {
         int currPlayer = 1;
         int playCnt = 0;
         int maxTurns = board.length * board.length;
-        
-        // Skapa en lista av två winchecker, en för varje spelare.
-        CheckToWin[] winCheckers = { new CheckToWin(), new CheckToWin() };
    
         while (true) {
         	playCnt++;
         	// Växla mellan winchekers beroende på spelare från listan
         	CheckToWin winChecker = winCheckers[currPlayer-1];
 
-        	// Ta in data frpn användare 1-9, gör om siffran till X och Y koordinater...
+        	// Ta in data från användare som får välja mellan 1-9.
             int userChoice = playerChoose(sc, Integer.toString(currPlayer));
+            winChecker.addUsrChoice(userChoice);
+
+            // Gör om användardanat till X och Y koordinater och spara även i board.
             int[] coord = sequentialToXY(userChoice);
             int y=coord[0];
             int x=coord[1];
-            winChecker.addUsrChoice(userChoice);
-
-            // Lagra den upptagna rutan både sekvenciellt och med X och Y koordinater.
             board[y][x] = currPlayer;
 
             UI.draw(board);
@@ -91,11 +87,12 @@ class Logic {
 			return new int[] {2,2};
 		}
 		return new int[] {0,0};
-//    	int[] ret = new int[2];
-//    	ret[0] = (box-1) / 3; // y
-//    	ret[1] = (box-1) % 3; // x
-    	
-//    	return ret;
+
+		// SAMMA SOM:
+		// int[] ret = new int[2];
+		// ret[0] = (box-1) / 3; // y
+		// ret[1] = (box-1) % 3; // x
+		// return ret;
     }
 
     // Just return the opposite:
@@ -104,14 +101,14 @@ class Logic {
     		return 2;
     	else
     		return 1;
-//		return player == 1 ? 2 : 1;
+    	// SAMMA SOM:
+    	// return player == 1 ? 2 : 1;
     }
 
     static ArrayList<Integer> Choices = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
     static ArrayList<Integer> playersChoices = new ArrayList<Integer>();
     
 	public int playerChoose( Scanner input, String name){	
-
 		boolean flag = false;
 		int choice=0;
 
@@ -213,13 +210,6 @@ class CheckToWin{
 
 	// method to check if player's choices have this standard win numbers so it will be break and this player wins 
 	boolean check() {
-//		ArrayList<Integer> playerList = new ArrayList<Integer>();
-//		playerList.addAll(boardFlat);
-//		playerList.removeIf(s -> s == player);
-		
-//		System.out.println(boardFlat.toString());
-		System.out.println(playerList.toString());
-
 		ArrayList<Integer> topRaw = new ArrayList<>(Arrays.asList(1, 2, 3));
 		ArrayList<Integer> midRaw = new ArrayList<>(Arrays.asList(4, 5, 6));
 		ArrayList<Integer> botRaw = new ArrayList<>(Arrays.asList(7, 8, 9));
