@@ -41,7 +41,7 @@ class Logic {
 
             UI.draw(board);
 
-            if ( WinCheckerSimple.check(board) ) {
+            if ( WinChecker.check(board) ) {
             	break;
             } else if ( playCnt >= maxTurns ) {
             	currPlayer = 0;
