@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -17,7 +18,6 @@ class Logic {
 	// 1 betyder: rutan till spelare  1
 	// 2 betyder: rutan till spelare  2
     int[][] board;
-//    boolean[] occupiedTiles = new boolean[9];
 
     public Logic(int gridSize) {
         board=new int[gridSize][gridSize];
@@ -29,21 +29,29 @@ class Logic {
         int currPlayer = 1;
         int playCnt = 0;
         int maxTurns = board.length * board.length;
+        
+        // Skapa en lista av två winchecker, en för varje spelare.
+        CheckToWin[] winCheckers = { new CheckToWin(), new CheckToWin() };
    
         while (true) {
         	playCnt++;
+        	// Växla mellan winchekers beroende på spelare från listan
+        	CheckToWin winChecker = winCheckers[currPlayer-1];
 
+        	// Ta in data frpn användare 1-9, gör om siffran till X och Y koordinater...
             int userChoice = playerChoose(sc, Integer.toString(currPlayer));
-//            occupiedTiles[userChoice-1] = true;
             int[] coord = sequentialToXY(userChoice);
             int y=coord[0];
             int x=coord[1];
+            winChecker.addUsrChoice(userChoice);
 
+            // Lagra den upptagna rutan både sekvenciellt och med X och Y koordinater.
             board[y][x] = currPlayer;
 
             UI.draw(board);
 
-            if ( WinChecker.check(board) ) {
+//            if ( WinChecker.check(board) ) {
+            if ( winChecker.check() ) {
             	break;
             } else if ( playCnt >= maxTurns ) {
             	currPlayer = 0;
@@ -100,7 +108,7 @@ class Logic {
     }
 
     static ArrayList<Integer> Choices = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
-    static ArrayList<Integer> playersChoices = new ArrayList<>();
+    static ArrayList<Integer> playersChoices = new ArrayList<Integer>();
     
 	public int playerChoose( Scanner input, String name){	
 
@@ -191,10 +199,85 @@ class UI {
 	}
 }
 
+class CheckToWin{
+	// Lista som innehåller alla de upptagna rutorna sekventiellt.
+	ArrayList<Integer> playerList;
+	
+	public CheckToWin() {
+		playerList = new ArrayList<Integer>();
+	}
+	
+	void addUsrChoice(int choice) {
+		playerList.add(choice);
+	}
+
+	// method to check if player's choices have this standard win numbers so it will be break and this player wins 
+	boolean check() {
+//		ArrayList<Integer> playerList = new ArrayList<Integer>();
+//		playerList.addAll(boardFlat);
+//		playerList.removeIf(s -> s == player);
+		
+//		System.out.println(boardFlat.toString());
+		System.out.println(playerList.toString());
+
+		ArrayList<Integer> topRaw = new ArrayList<>(Arrays.asList(1, 2, 3));
+		ArrayList<Integer> midRaw = new ArrayList<>(Arrays.asList(4, 5, 6));
+		ArrayList<Integer> botRaw = new ArrayList<>(Arrays.asList(7, 8, 9));
+		ArrayList<Integer> leftColomn = new ArrayList<>(Arrays.asList(1, 4, 7));
+		ArrayList<Integer> midColomn = new ArrayList<>(Arrays.asList(2, 5, 8));
+		ArrayList<Integer> rightColomn = new ArrayList<>(Arrays.asList(3, 6, 9));
+		ArrayList<Integer> cross1 = new ArrayList<>(Arrays.asList(1, 5, 9));
+		ArrayList<Integer> cross2 = new ArrayList<>(Arrays.asList(3, 5, 7));
+		
+		if (playerList.containsAll(topRaw) || playerList.containsAll(midRaw) || playerList.containsAll(botRaw)
+				|| playerList.containsAll(leftColomn) || playerList.containsAll(midColomn)
+				|| playerList.containsAll(rightColomn) || playerList.containsAll(cross1)
+				|| playerList.containsAll(cross2)) {
+			System.out.println(" you win ");
+			return true;
+		}
+		return false;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+/*
+ * #################
+ * ANVÄNDS INTE FÖR TILLFÄLLET:
+ * #################
+ * #################
+ * #################
+ * #################
+ * 
+ * 
+ */
+
+
+
+
+
+
 /*
  * Should check whether any player has won by checking if there are three of the same boxes in the 2D array.
  */
 class WinChecker {
+	
+//	private ArrayList<Integer> flattenBoard(int[][] board){
+//		for ( int y=0; y<board.length; y++) {
+//			for ( int x=0; x<board.length; x++) {
+//
+//			}
+//		}
+//	}
+//
 	/* 
 	 * Takes a 2D-array and returns true if there exists a straight
 	 * line with all values equal and not zero.
