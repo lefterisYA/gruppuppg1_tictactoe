@@ -150,17 +150,18 @@ class Logic {
  */
 class UI {
 	public static void drawBoard(int[][] ticTac) {
-		System.out.println();
+		System.out.print(" "+"\n");
 		for (int i = 0; i < 2; i++) {
+			System.out.print(" ");
 			for (int j = 0; j < 2; j++) {
 				System.out.print(ticTac[i][j] + " | ");
 			}
 
 			System.out.print(ticTac[i][2]);
 			System.out.println();
-			System.out.println("--+---+--");
-
+			System.out.println("---+---+---");
 		}
+		System.out.print(" ");
 		for (int j = 0; j < 2; j++) {
 			System.out.print(ticTac[2][j] + " | ");
 		}
@@ -196,6 +197,10 @@ class UI {
 	}
 }
 
+/*
+ * Klassen skapar objekt som tillhör spelarna. Den innehåller data och metoder som möjliggör att man 
+ * kan kontrollera ifall spelet har avslutats.
+ */
 class CheckToWin{
 	// Lista som innehåller alla de upptagna rutorna sekventiellt.
 	ArrayList<Integer> playerList;
