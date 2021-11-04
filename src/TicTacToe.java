@@ -23,6 +23,7 @@ class Logic {
     }
 
     public void play(Scanner sc) {
+        UI.drawLegent();
         UI.draw(board);
 
         int currPlayer = 1;
@@ -115,7 +116,7 @@ class Logic {
 		do {
 			try {
 				System.out.println( "Player " + name + 
-						" it's your turn. Input on of " + getValidChoices() + ":");
+						" it's your turn.\nInput one of the following " + getValidChoices() + ":");
 
 				choice = input.nextInt();
 				if ((choice < 1 || choice > 9) || (playersChoices.contains(choice))) 
@@ -149,26 +150,47 @@ class Logic {
  * Should draw the board given a 2D array.
  */
 class UI {
+	// Change ints to what the user sees. 
+	// If isLegent, don't change anything so we can still print 1,2,3,4 and not X,O,3,4..
+	public static String getPrintSymbol(int val, boolean isLegent) {
+		if (isLegent)
+			return Integer.toString(val);
+		else if ( val == 0 )
+			return " ";
+		else if ( val == 1 )
+			return "X";
+		else
+			return "O";
+	}
+	
+	public static void drawLegent() {
+		System.out.println("Positions:");
+		int[][] nums = {{1,2,3},{4,5,6},{7,8,9}};
+		drawBoard(nums, true);
+	}
+	
 	public static void drawBoard(int[][] ticTac) {
+		drawBoard(ticTac, false);
+	}
+	
+	private static void drawBoard(int[][] ticTac, boolean isLegent) {
 		System.out.print(" "+"\n");
 		for (int i = 0; i < 2; i++) {
 			System.out.print(" ");
 			for (int j = 0; j < 2; j++) {
-				System.out.print(ticTac[i][j] + " | ");
+				System.out.print(getPrintSymbol(ticTac[i][j], isLegent) + " | ");
 			}
 
-			System.out.print(ticTac[i][2]);
+			System.out.print(getPrintSymbol(ticTac[i][2], isLegent));
 			System.out.println();
 			System.out.println("---+---+---");
 		}
 		System.out.print(" ");
 		for (int j = 0; j < 2; j++) {
-			System.out.print(ticTac[2][j] + " | ");
+			System.out.print(getPrintSymbol(ticTac[2][j], isLegent) + " | ");
 		}
-		System.out.print(ticTac[2][2]);
-		System.out.println();
-		System.out.println();
-		System.out.println();
+		System.out.print(getPrintSymbol(ticTac[2][2], isLegent));
+		System.out.println("\n\n");
 	}
 	
 	public static void draw(int[][] board) {
