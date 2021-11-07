@@ -32,4 +32,26 @@ public class Test {
 		System.out.println(mvsFromNull.size());
 
 	}
+    public static void drawDebug(int[][] board, String title) {
+    	System.out.println(title);
+//    	System.out.println("int[][] board;");
+		for ( int y = 0; y<board.length; y++ ) {
+//			System.out.print("int["+y+"]: int[]:");
+			for ( int x = 0; x<board[y].length; x++ ) {
+				System.out.print(board[y][x]);
+			}
+//			System.out.print("  ");
+//			for ( int x = 0; x<board.length; x++ ) {
+//				System.out.print(y+":"+board[y][x]+" ");
+//			}
+			System.out.println("");
+		}
+    }
+
+//		int[][] testBoard = new int[][] {
+//				{1,0,2},
+//				{2,0,0},
+//				{2,1,1}
+//		};
+//		board = testBoard;
 }

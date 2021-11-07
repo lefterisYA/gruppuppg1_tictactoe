@@ -74,12 +74,12 @@ public class AiPlayer {
 		}
 		
 		int[] ret= new int[] {-1,-1};
-		if ( lowestStepsToDrw < board.length*board.length+1 ) {
+		if ( lowestStepsToDrw < board.length*board.length ) {
 			System.out.print(lowestStepsToDrw+" to ");
 			System.out.println("Drw:" + (fastestDrwMove[0]+1) + "," + (fastestDrwMove[1]+1) );
 			ret = new int[] { fastestDrwMove[0], fastestDrwMove[1] };
 		}
-		if ( lowestStepsToWin < board.length*board.length+1 ) {
+		if ( lowestStepsToWin < board.length*board.length ) {
 			System.out.print(lowestStepsToWin+" to ");
 			System.out.println("Win:" + (fastestWinMove[0]+1) + "," + (fastestWinMove[1]+1) );
 			ret = new int[] { fastestWinMove[0], fastestWinMove[1] };
@@ -101,22 +101,23 @@ public class AiPlayer {
 //		int currPlayer = playerCalled; 
 		if ( moves.size() > 0 ) {
 //			currPlayer = moves.getCurrentPlayer();
-			int maxiPlayer = getOppo(currPlayer); // Player we are maximizing for!
+//			int maxiPlayer = getOppo(currPlayer); // Player we are maximizing for!
+			int maxiPlayer = moves.getStrtPlayer();
 
-			int[] lastMove = moves.getFrstMove();
+			int[] lastMove = moves.getLastMove();
 			int y=lastMove[0];
 			int x=lastMove[1];
 			if ( WinChecker.check(board) ) {
-				if ( currPlayer == maxiPlayer ) {
-//				    bestMoves.add(new int[] { depth, 1, y, x });
+				if ( currPlayer != maxiPlayer ) {
+				    bestMoves.add(new int[] { depth, 1, y, x });
 					return new int[] {1,depth, scoreForMove+1};
 				} else {
-//				    bestMoves.add(new int[] { depth, -1, y, x });
+				    bestMoves.add(new int[] { depth, -1, y, x });
 					return new int[] {-1,depth, scoreForMove-1};
 				}
 			} 
 			else if ( isFull(board) ) {
-//				bestMoves.add(new int[] { depth, 0, y, x });
+				bestMoves.add(new int[] { depth, 0, y, x });
 				return new int[] {0,depth, 0};
 			} 
 		}
@@ -136,8 +137,8 @@ public class AiPlayer {
 					int[] temp=miniMax( newBoard, depth+1, mvsBranch, getOppo(currPlayer), scoreForMove);
 					int totScore=temp[2];
 					int fromDep=temp[1];
-					if ( depth==0 )
-						bestMoves.add(new int[] { fromDep, totScore, y, x });
+//					if ( depth==0 )
+//						bestMoves.add(new int[] { fromDep, totScore, y, x });
 //				    bestMoves.add(new int[] { depth, scoreForMove, y, x });
 //					if ( temp != -99999 )
 //						scoreForMove -= temp;

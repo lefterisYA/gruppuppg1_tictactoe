@@ -9,7 +9,7 @@ package main;
  * Sen har lefteris fortsatt lite med att försöka skapa ett AI, vilket var varför klassen Player skapades. Det är lite
  * work in progress med de delarna.
  * 
- * Hela projektet är bifokad med gammal kod i seperata paket. Det relevanta för uppgiften ligger under main.
+ * Hela projektet är bifogad med gammal kod i seperata paket. Det relevanta för uppgiften ligger under main.
  * 
  */
 
@@ -34,16 +34,14 @@ class Logic {
 
     public Logic(int gridSize) {
         board=new int[gridSize][gridSize];
-//		int[][] testBoard = new int[][] {
-//				{1,0,2},
-//				{2,0,0},
-//				{2,1,1}
-//		};
-//		board = testBoard;
+    }
+
+    public Logic(int[][] board) { // for testing purposes.
+        this.board=board;
     }
 
     public void play(Scanner sc) {
-        UI.drawLegent();
+        UI.drawLegent(); 
         
         Player.addPlayer("1", false);
         Player.addPlayer("2", true);
@@ -60,7 +58,12 @@ class Logic {
             	System.out.println( "Computer playing!" );
             	int[] aiChoice = currPlayer.getAi().miniMax(board, currPlayer.getPlayerNum());
             	currPlayer.addUsrChoice(XYToseq(aiChoice[0], aiChoice[1]));
+            	try {
             	board[aiChoice[0]][aiChoice[1]]  = currPlayer.getPlayerNum()+1;
+            	} catch (Exception e) {
+            		System.out.println("error. Manual input.\ny:");
+            		board[sc.nextInt()][sc.nextInt()] = currPlayer.getPlayerNum();
+            	}
             } else {
             	// Ta in data från användare som får välja mellan 1-9.
             	System.out.println( "Player " + currPlayer.getPlayerName() + " it's your turn.");
@@ -233,6 +236,7 @@ class Player {
  * Should draw the board given a 2D array.
  */
 class UI {
+	// Draws the board with all the positions as the uer sees them.
 	public static void drawLegent() {
 		System.out.println("Positions:");
 		int[][] nums = {{1,2,3},{4,5,6},{7,8,9}};
@@ -275,20 +279,4 @@ class UI {
 		else
 			return "O";
 	}
-	
-    public static void drawDebug(int[][] board, String title) {
-    	System.out.println(title);
-//    	System.out.println("int[][] board;");
-		for ( int y = 0; y<board.length; y++ ) {
-//			System.out.print("int["+y+"]: int[]:");
-			for ( int x = 0; x<board[y].length; x++ ) {
-				System.out.print(board[y][x]);
-			}
-//			System.out.print("  ");
-//			for ( int x = 0; x<board.length; x++ ) {
-//				System.out.print(y+":"+board[y][x]+" ");
-//			}
-			System.out.println("");
-		}
-    }
 }
