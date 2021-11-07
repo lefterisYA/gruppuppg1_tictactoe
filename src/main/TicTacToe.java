@@ -44,7 +44,7 @@ class Logic {
         UI.drawLegent(); 
         
         Player.addPlayer("1", false);
-        Player.addPlayer("2", true);
+        Player.addPlayer("2", false);
 
         int playCnt = 0;
         int maxTurns = board.length * board.length;
