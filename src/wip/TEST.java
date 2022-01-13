@@ -14,13 +14,13 @@ public class TEST {
 		GUI.drawArrayPositions();
 		GUI.drawEmptyArray();
 
-		Player t1 = new Player("player1", 'X', 1);
-		Player t2 = new Player("player2", 'O', 2);
-		Player[] players = { t1, t2 };
+		PlayerOld t1 = new PlayerOld("player1", 'X', 1);
+		PlayerOld t2 = new PlayerOld("player2", 'O', 2);
+		PlayerOld[] players = { t1, t2 };
 		int playTurn = 0;
 		
 		do {
-			Player currentPlayer = players[playTurn];
+			PlayerOld currentPlayer = players[playTurn];
 
 			int playerChoice = currentPlayer.playerChoose(input);
 			currentPlayer.playerPosition(playerChoice, ticTac);
@@ -41,7 +41,7 @@ public class TEST {
 	}
 }
 
-class Player {
+class PlayerOld {
 	String name;
 	int playerNumber;
 	char ch;
@@ -49,7 +49,7 @@ class Player {
 	ArrayList<Integer> playerList = new ArrayList<Integer>();        // every object has own Array for his choices
 	ArrayList<Integer> Choices = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));    // players have to choose from  this numbers limit 
 	
-	public Player( String name, char symbol, int playerNumber ) {
+	public PlayerOld( String name, char symbol, int playerNumber ) {
 		this.ch = symbol;
 		this.name = name;
 		this.playerNumber = playerNumber;
